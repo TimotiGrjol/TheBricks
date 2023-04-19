@@ -1,1 +1,1 @@
-[# TheBricks](_https://timotigrjol.github.io/TheBricks/)
+[TheBricks](https://timotigrjol.github.io/TheBricks/)
