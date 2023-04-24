@@ -1,6 +1,7 @@
 #canvas{
     border: 1px black solid;
-    background-color: darkgray;
+    background-color:rgb(255, 255, 255);
+   
 }
 #wrapper{
     position: relative;
@@ -18,10 +19,16 @@
     margin: auto;
     height: fit-content;
     width: fit-content;
-
+    display: block ;
+    background-color: white;
+    padding: 2px 2px;
 }
 html{
-    background-color:dimgray;
+    background-image: url(images/background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+
 
 }
 

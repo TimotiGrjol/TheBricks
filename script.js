@@ -24,11 +24,13 @@ var Padding;
 var rHeight;  
 var cWidth;
 var brick = new Image();
-brick.src = "Brick.png";
+brick.src = "images/Brick1.png";
+var paddleImg = new Image();
+paddleImg.src = "images/paddle.png";
 const r=5;
 var row;
 var col;
-var countBricks=5;
+var countBricks;
 
 
 function init() {
@@ -95,10 +97,10 @@ function draw() {
   } 
 
 
-  ctx.rect(paddlex, height - paddleh-5, paddlew, paddleh);
+  ctx.drawImage(paddleImg,paddlex, height - paddleh-5, paddlew, paddleh);
   
   ctx.closePath();
-  ctx.fillStyle="red";
+  ctx.fillStyle="black";
   ctx.fill();
   x += dx;
   y += dy;
@@ -191,10 +193,11 @@ function onMouseMove(evt) {
 
 //inicializacija opek - polnjenje v tabelo
 function initbricks() { 
-  nRows = 1;
+  nRows = 5;
   nCols = 5;
+  countBricks=nRows*nCols;
   bWidth = 194;
-  bHeight = 35;
+  bHeight = 45;
   Padding = 5;
   bricks = new Array(nRows);
   for (i=0; i < nRows; i++) {
