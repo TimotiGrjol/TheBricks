@@ -1,5 +1,6 @@
 #canvas{
     border: 1px black solid;
+    background-color: darkgray;
 }
 #wrapper{
     position: relative;
@@ -7,3 +8,20 @@
     height: fit-content;
     width: fit-content;
 }
+#canvas:hover{
+    cursor: none;
+
+
+}
+#points{
+    position:relative;
+    margin: auto;
+    height: fit-content;
+    width: fit-content;
+
+}
+html{
+    background-color:dimgray;
+
+}
+

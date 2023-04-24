@@ -1,7 +1,7 @@
 
-var x = 400;
+var x = 500;
 var y = 775;
-var dx = 2;
+var dx = 1;
 var dy = -5;
 var ctx;
 var canvas;
@@ -21,10 +21,19 @@ var nCols;
 var bWidth;
 var bHeight;
 var Padding;
-var rHeight;
+var rHeight;  
 var cWidth;
+var brick = new Image();
+brick.src = "Brick.png";
+const r=5;
+var row;
+var col;
+var countBricks=5;
+
 
 function init() {
+  tocke = 0;
+  $("#tocke").html(tocke);
   height = 800;
   width = 1000;
   paddlew = 115;
@@ -54,14 +63,13 @@ function draw() {
 
   //premik ploščice z tipkovnico
   if(paddlex < width && paddlex >0){
-    if (rightDown && paddlex + paddlew < width) paddlex += 10;
+    if (rightDown && paddlex + paddlew < width) paddlex += 7;
     else if (leftDown && paddlex >0) paddlex-=10;
   }
   else{
-    if (rightDown && paddlex + paddlew < width) paddlex += 10;
+    if (rightDown && paddlex + paddlew < width) paddlex += 7;
     else if (leftDown && paddlex >0) paddlex-=10;
   }
-
 
   ctx.beginPath();
   ctx.arc(x, y, 10, 0, Math.PI * 2, true);
@@ -69,42 +77,82 @@ function draw() {
   for (i=0; i < nRows; i++) {
     for (j=0; j < nCols; j++) {
       if (bricks[i][j] == 1) {
-        ctx.rect((j * (bWidth + Padding)) + Padding,
-            (i * (bHeight + Padding)) + Padding,
-            bWidth, bHeight);
+        ctx.drawImage(brick, (j * (bWidth + Padding)) + Padding, (i * (bHeight + Padding)) + Padding, bWidth, bHeight);
       }
     }
   }
-  rHeight = bHeight + Padding+1  ; //Smo zadeli opeko?
+  rHeight = bHeight + Padding+1.5 ; //Smo zadeli opeko?
   cWidth = bWidth + Padding ;
   row = Math.floor(y/rHeight);
   col = Math.floor(x/cWidth);
   //Če smo zadeli opeko, vrni povratno kroglo in označi v tabeli, da opeke ni več
   if (y < nRows * rHeight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
-    dy = -dy; bricks[row][col] = 0;
+    tocke += 1;
+    bricks[row][col] = 0;
+    if(tocke==countBricks)setTimeout(()=>{win()},11)
+    $("#tocke").html(tocke);
+    dy = -dy;
   } 
 
 
   ctx.rect(paddlex, height - paddleh-5, paddlew, paddleh);
   
   ctx.closePath();
+  ctx.fillStyle="red";
   ctx.fill();
   x += dx;
   y += dy;
 
-  if (y + dy < 7)
+  
+
+
+
+  if (y + dy < 5)
     dy = -dy;
-  else if (y + dy > height-5) {
-  if (x > paddlex && x < paddlex + paddlew)
+  else if (y + dy == height-r*4 && x+r > paddlex && x-r < paddlex + paddlew) {
     dx = 9 * ((x-(paddlex+paddlew/2))/paddlew);
-  else if(y + dy > height - 8)
-    stop();
     dy = -dy;
   }
+  else if(y + dy == height)
+      stop();
+    
+      
+
    
 }
+
+function win(){
+  clearInterval(interval);
+  Swal.fire({
+    icon: 'success',
+    title: 'You win!',
+    text: 'Try again?',
+    confirmButtonText:"restart",
+    confirmButtonColor: "green"
+    
+  }).then(function(isConfirm) {
+    if (isConfirm) {
+      location.reload()}
+      
+    });
+
+
+}
+
 function stop() {
   clearInterval(interval);
+  Swal.fire({
+    icon: 'error',
+    title: 'You lose',
+    text: 'Try again?',
+    confirmButtonText:"restart",
+    confirmButtonColor: "red"
+    
+  }).then(function(isConfirm) {
+    if (isConfirm) {
+      location.reload()}
+      
+    });
 }
 
 function onKeyDown(evt) {
@@ -143,9 +191,9 @@ function onMouseMove(evt) {
 
 //inicializacija opek - polnjenje v tabelo
 function initbricks() { 
-  nRows = 8;
+  nRows = 1;
   nCols = 5;
-  bWidth = (width/nCols) - 6;
+  bWidth = 194;
   bHeight = 35;
   Padding = 5;
   bricks = new Array(nRows);
