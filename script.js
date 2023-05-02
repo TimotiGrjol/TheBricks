@@ -151,7 +151,7 @@ function stop() {
     dy = -5;
     setTimeout(() => {
       init();
-    }, 500);
+    }, 1000);
   }
 }
 
