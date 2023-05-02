@@ -1,21 +1,22 @@
 <html>
-    <head>
+  <head>
     <title>The Bricks</title>
-    <link rel="stylesheet" href="style.css">
-    </head>
-    <body >
-        <div id="wrapper">
-            <canvas id="canvas" width="1000" height="800"></canvas>
-        </div>
-        <div id="points">
-            <p>Točke: <mark id="tocke">0</mark></p>
-        </div>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body onload="start()">
+    <div id="wrapper">
+      <canvas id="canvas" width="1000" height="800"></canvas>
+    </div>
+    <div id="points">
+      Lives: <b id="life">3</b><br />
+      Points: <b id="tocke">0</b>
+    </div>
 
-
-<script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script defer src="script.js"></script>
-        <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        
-
-    </body>
+    <script
+      defer
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"
+    ></script>
+    <script defer src="script.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
 </html>

@@ -1,34 +1,32 @@
-#canvas{
-    border: 1px black solid;
-    background-color:rgb(255, 255, 255);
-   
+#canvas {
+  border: 1px black solid;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 1em;
 }
-#wrapper{
-    position: relative;
-    margin: auto;
-    height: fit-content;
-    width: fit-content;
+#wrapper {
+  position: relative;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
 }
-#canvas:hover{
-    cursor: none;
-
-
+#canvas:hover {
+  cursor: none;
 }
-#points{
-    position:relative;
-    margin: auto;
-    height: fit-content;
-    width: fit-content;
-    display: block ;
-    background-color: white;
-    padding: 2px 2px;
+#points {
+  position: relative;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+  display: block;
+  background-color: white;
+  padding: 2px 2px;
 }
-html{
-    background-image: url(images/background.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-
-
-
+html {
+  background-image: url(images/background.png);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-
+#life {
+  background-color: rgba(240, 248, 255, 0);
+  margin-top: 10px;
+}

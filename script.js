@@ -1,4 +1,3 @@
-
 var x = 500;
 var y = 775;
 var dx = 1;
@@ -21,167 +20,175 @@ var nCols;
 var bWidth;
 var bHeight;
 var Padding;
-var rHeight;  
+var rHeight;
 var cWidth;
 var brick = new Image();
 brick.src = "images/Brick1.png";
 var paddleImg = new Image();
 paddleImg.src = "images/paddle.png";
-const r=5;
+const r = 5;
 var row;
 var col;
 var countBricks;
-
+var life = 3;
+var tocke = 0;
 
 function init() {
-  tocke = 0;
   $("#tocke").html(tocke);
   height = 800;
   width = 1000;
   paddlew = 115;
-  paddlex = (width/2)-(paddlew/2);
+  paddlex = width / 2 - paddlew / 2;
   paddleh = 10;
-  canvas = document.getElementById('canvas');
-  ctx = canvas.getContext('2d');
-  
-  return interval= setInterval(draw, 10); //klic funkcije draw vsakih 10 ms; http://www.w3schools.com/jsref/met_win_setinterval.asp
+  canvas = document.getElementById("canvas");
+  ctx = canvas.getContext("2d");
+
+  return (interval = setInterval(draw, 10)); //klic funkcije draw vsakih 10 ms; http://www.w3schools.com/jsref/met_win_setinterval.asp
 }
 
-
-
-
 function draw() {
-  if (x + dx > width - 10 || x + dx < 7)
-    dx = -dx;
-  if ( y + dy < 10)
-    dy = -dy;
-  
-    
+  if (x + dx > width - 10 || x + dx < 7) dx = -dx;
+  if (y + dy < 10) dy = -dy;
+
   ctx.clearRect(0, 0, width, height);
 
-  
-  
-  
-
   //premik ploščice z tipkovnico
-  if(paddlex < width && paddlex >0){
+  if (paddlex < width && paddlex > 0) {
     if (rightDown && paddlex + paddlew < width) paddlex += 7;
-    else if (leftDown && paddlex >0) paddlex-=10;
-  }
-  else{
+    else if (leftDown && paddlex > 0) paddlex -= 10;
+  } else {
     if (rightDown && paddlex + paddlew < width) paddlex += 7;
-    else if (leftDown && paddlex >0) paddlex-=10;
+    else if (leftDown && paddlex > 0) paddlex -= 10;
   }
 
   ctx.beginPath();
   ctx.arc(x, y, 10, 0, Math.PI * 2, true);
 
-  for (i=0; i < nRows; i++) {
-    for (j=0; j < nCols; j++) {
+  for (i = 0; i < nRows; i++) {
+    for (j = 0; j < nCols; j++) {
       if (bricks[i][j] == 1) {
-        ctx.drawImage(brick, (j * (bWidth + Padding)) + Padding, (i * (bHeight + Padding)) + Padding, bWidth, bHeight);
+        ctx.drawImage(
+          brick,
+          j * (bWidth + Padding) + Padding,
+          i * (bHeight + Padding) + Padding,
+          bWidth,
+          bHeight
+        );
       }
     }
   }
-  rHeight = bHeight + Padding+1.5 ; //Smo zadeli opeko?
-  cWidth = bWidth + Padding ;
-  row = Math.floor(y/rHeight);
-  col = Math.floor(x/cWidth);
+  rHeight = bHeight + Padding + 1.5; //Smo zadeli opeko?
+  cWidth = bWidth + Padding;
+  row = Math.floor(y / rHeight);
+  col = Math.floor(x / cWidth);
   //Če smo zadeli opeko, vrni povratno kroglo in označi v tabeli, da opeke ni več
   if (y < nRows * rHeight && row >= 0 && col >= 0 && bricks[row][col] == 1) {
     tocke += 1;
     bricks[row][col] = 0;
-    if(tocke==countBricks)setTimeout(()=>{win()},11)
+    if (tocke == countBricks)
+      setTimeout(() => {
+        win();
+      }, 11);
     $("#tocke").html(tocke);
     dy = -dy;
-  } 
+  }
 
+  ctx.drawImage(paddleImg, paddlex, height - paddleh - 5, paddlew, paddleh);
 
-  ctx.drawImage(paddleImg,paddlex, height - paddleh-5, paddlew, paddleh);
-  
   ctx.closePath();
-  ctx.fillStyle="black";
+  ctx.fillStyle = "black";
   ctx.fill();
   x += dx;
   y += dy;
 
-  
-
-
-
-  if (y + dy < 5)
+  if (y + dy < 5) dy = -dy;
+  else if (
+    y + dy == height - r * 4 &&
+    x + r > paddlex &&
+    x - r < paddlex + paddlew
+  ) {
+    dx = 9 * ((x - (paddlex + paddlew / 2)) / paddlew);
     dy = -dy;
-  else if (y + dy == height-r*4 && x+r > paddlex && x-r < paddlex + paddlew) {
-    dx = 9 * ((x-(paddlex+paddlew/2))/paddlew);
-    dy = -dy;
-  }
-  else if(y + dy == height)
-      stop();
-    
-      
-
-   
+  } else if (y + dy == height) stop();
 }
 
-function win(){
+function win() {
   clearInterval(interval);
   Swal.fire({
-    icon: 'success',
-    title: 'You win!',
-    text: 'Try again?',
-    confirmButtonText:"restart",
-    confirmButtonColor: "green"
-    
-  }).then(function(isConfirm) {
+    icon: "success",
+    title: "You win!",
+    text: "Your score was: " + tocke,
+    confirmButtonText: "Try again?",
+    confirmButtonColor: "1f7c98",
+  }).then(function (isConfirm) {
     if (isConfirm) {
-      location.reload()}
-      
-    });
-
-
+      location.reload();
+    }
+  });
 }
 
 function stop() {
-  clearInterval(interval);
-  Swal.fire({
-    icon: 'error',
-    title: 'You lose',
-    text: 'Try again?',
-    confirmButtonText:"restart",
-    confirmButtonColor: "red"
-    
-  }).then(function(isConfirm) {
-    if (isConfirm) {
-      location.reload()}
-      
+  if (life == 1) {
+    clearInterval(interval);
+    Swal.fire({
+      icon: "error",
+      title: "You lose",
+      text: "Try again?",
+      confirmButtonText: "restart",
+      confirmButtonColor: "red",
+    }).then(function (isConfirm) {
+      if (isConfirm) {
+        location.reload();
+      }
     });
+  } else {
+    life -= 1;
+    $("#life").html(life);
+    clearInterval(interval);
+    x = 500;
+    y = 775;
+    dx = 1;
+    dy = -5;
+    setTimeout(() => {
+      init();
+    }, 500);
+  }
 }
 
 function onKeyDown(evt) {
-  if (evt.keyCode == 39)
-    rightDown = true;
-  else if (evt.keyCode == 37) 
-    leftDown = true;
+  if (evt.keyCode == 39) rightDown = true;
+  else if (evt.keyCode == 37) leftDown = true;
 }
 
 function onKeyUp(evt) {
-  if (evt.keyCode == 39)
-    rightDown = false;
-  else if (evt.keyCode == 37) 
-    leftDown = false;
+  if (evt.keyCode == 39) rightDown = false;
+  else if (evt.keyCode == 37) leftDown = false;
 }
 
-init();
-init_mouse(); 
+function start() {
+  Swal.fire({
+    icon: "info",
+    title: "Welcome to the Bricks",
+    text: "press start to begin",
+    confirmButtonText: "Start",
+    confirmButtonColor: "#1f7c98",
+  }).then(function (isConfirm) {
+    if (isConfirm) {
+      init();
+      init_mouse();
+    }
+  });
+}
+
 initbricks();
-$(document).mousemove(onMouseMove); 
-$(document).keyup(onKeyUp); 
-$(document).keydown(onKeyDown); 
+$(document).mousemove(onMouseMove);
+$(document).keyup(onKeyUp);
+$(document).keydown(onKeyDown);
 
 // premikanje ploščka z miško
 function init_mouse() {
   //canvasMinX = $("#canvas").offset().left;
-  canvasMinX = $("canvas").offset().left+ paddlew/2;
+  canvasMinX = $("canvas").offset().left + paddlew / 2;
   canvasMaxX = canvasMinX + width - paddlew;
 }
 
@@ -192,26 +199,21 @@ function onMouseMove(evt) {
 }
 
 //inicializacija opek - polnjenje v tabelo
-function initbricks() { 
+function initbricks() {
   nRows = 5;
   nCols = 5;
-  countBricks=nRows*nCols;
+  countBricks = nRows * nCols;
   bWidth = 194;
   bHeight = 45;
   Padding = 5;
   bricks = new Array(nRows);
-  for (i=0; i < nRows; i++) {
+  for (i = 0; i < nRows; i++) {
     bricks[i] = new Array(nCols);
-    for (j=0; j < nCols; j++) {
+    for (j = 0; j < nCols; j++) {
       bricks[i][j] = 1;
     }
   }
 }
-
-
-
-
-
 
 /*
 
